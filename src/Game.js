@@ -67,7 +67,6 @@ class Game extends Component {
       rollsLeft: NUM_ROLLS,
       locked: Array(NUM_DICE).fill(false)
     }));
-    this.disableScoreRow(rulename);
     this.roll();
   }
 

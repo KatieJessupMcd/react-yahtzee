@@ -7,6 +7,7 @@ class Die extends Component {
       <button
         className={this.props.locked ? 'Die Die-locked' : 'Die'}
         // BUG arrow function to maintian this
+        disabled={this.props.disabled}
         onClick={() => this.props.handleClick(this.props.idx)}
       >
         {this.props.val}

@@ -13,6 +13,7 @@ class Game extends Component {
       dice: Array.from({ length: NUM_DICE }),
       locked: Array(NUM_DICE).fill(false),
       rollsLeft: NUM_ROLLS,
+      disabled: false,
       scores: {
         ones: undefined,
         twos: undefined,
@@ -33,6 +34,7 @@ class Game extends Component {
     this.doScore = this.doScore.bind(this);
     // BUG - this was not bound before
     this.toggleLocked = this.toggleLocked.bind(this);
+    this.disableScoreRow = this.disableScoreRow.bind(this);
   }
 
   roll(evt) {
@@ -42,6 +44,7 @@ class Game extends Component {
         st.locked[i] ? d : Math.ceil(Math.random() * 6)
       ),
       locked: st.rollsLeft > 1 ? st.locked : Array(NUM_DICE).fill(true),
+      disabled: st.rollsLeft > 1 ? false : true,
       rollsLeft: st.rollsLeft - 1
     }));
   }
@@ -64,7 +67,15 @@ class Game extends Component {
       rollsLeft: NUM_ROLLS,
       locked: Array(NUM_DICE).fill(false)
     }));
+    this.disableScoreRow(rulename);
     this.roll();
+  }
+
+  disableScoreRow(name) {
+    console.log(this.state);
+    this.setState({
+      disabled: true
+    });
   }
 
   render() {
@@ -74,6 +85,8 @@ class Game extends Component {
           dice={this.state.dice}
           locked={this.state.locked}
           handleClick={this.toggleLocked}
+          // disabled is going to have a TRUE OR FALSE;
+          disabled={this.state.disabled}
         />
         <button
           className="Game-reroll"
@@ -82,7 +95,11 @@ class Game extends Component {
         >
           {this.state.rollsLeft} Rerolls Left
         </button>
-        <ScoreTable doScore={this.doScore} scores={this.state.scores} />
+        <ScoreTable
+          // disabled={this.state.disabled}
+          doScore={this.doScore}
+          scores={this.state.scores}
+        />
       </section>
     );
   }
